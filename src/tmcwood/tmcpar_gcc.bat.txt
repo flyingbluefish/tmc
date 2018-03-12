@@ -1,0 +1,7 @@
+set PATH=D:\Data_D\HSKOST\Tools\MinGW\bin;
+
+ gcc  -O0 -masm=intel -D GCC_BUILD=1 -o  ..\bin\tmcparG.exe lex.tmcpar_.cpp tmc_tree_debug.cpp tmclsp_matrix.cpp tmc_mak_ml.cpp tmcpar_env.cpp tmcpar_tree.cpp tmcpar_utils.cpp  TmcParParser.tab.cpp tmc_sym_table.cpp tmc_string_hash.cpp -static  -lstdc++
+
+rem gcc  -masm=intel  -c -D GCC_BUILD=1 -o  ..\bin\tmcparG.exe tmcpar_env.cpp  -static  -lstdc++
+
+pause

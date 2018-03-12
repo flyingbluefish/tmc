@@ -1,0 +1,5 @@
+set PATH=D:\Data_D\HSKOST\Tools\MinGW\bin;
+
+gcc -o ex.exe exopendir.cpp -static  -lstdc++
+ex.exe .
+pause

@@ -1,0 +1,4907 @@
+Terminals unused in grammar
+
+   PFOR
+   UNTIL
+   U_EXP
+
+
+Grammar
+
+    0 $accept: module $end
+
+    1 module: list_function END_OF_INPUT
+
+    2 list_function: func_def_statement
+    3              | list_function func_def_statement
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ command RPAREN
+
+    9 expression: ident
+   10           | nil
+   11           | const
+   12           | colon_expr
+   13           | s_assign
+   14           | indx_expr
+   15           | bin_expr
+   16           | bool_expr
+   17           | un_expr
+   18           | cell
+   19           | matrix
+   20           | fcn_handle
+   21           | multi_assign
+
+   22 nil: LPAREN NIL RPAREN
+
+   23 command: return
+   24        | decl_cmd
+   25        | no_op_cmd
+   26        | if
+   27        | while
+   28        | continue
+   29        | break
+   30        | switch
+   31        | for
+   32        | try
+
+   33 t_list_par: LPAREN LIST EQ PAR list_par RPAREN
+   34           | nil
+
+   35 list_par: ident
+   36         | list_par ident
+   37         | NIL
+
+   38 t_list_statement: LPAREN LIST EQ STATEMENT list_statement RPAREN
+   39                 | LPAREN LIST EQ STATEMENT RPAREN
+
+   40 list_statement: statement
+   41               | list_statement statement
+   42               | NIL
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+   45 variant_val: NUMBER
+   46            | LPAREN NUMBER NUMBER RPAREN
+   47            | STRING
+   48            | nil
+   49            | LPAREN MAGIC_COL RPAREN
+
+   50 t_list_decl: LPAREN LIST EQ DECL list_ident RPAREN
+
+   51 list_ident: list_par
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+   55 indx_expr: by_index
+   56          | by_field
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+   58 t_list_argument: LPAREN LIST EQ ARGUMENT list_argument RPAREN
+
+   59 list_argument: expression
+   60              | list_argument expression
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+   68 t_list_of_argument_list: LPAREN LIST EQ ARGUMENT_LIST list_of_argument_list RPAREN
+
+   69 list_of_argument_list: argument_list
+   70                      | list_of_argument_list argument_list
+   71                      | nil
+
+   72 argument_list: LPAREN TREE EQ ARGUMENT_LIST ARGUMENTS EQ t_list_argument RPAREN
+
+   73 return: LPAREN TREE EQ RETURN LINE EQ NUMBER COL EQ NUMBER RPAREN
+
+   74 break: LPAREN TREE EQ BREAK LINE EQ NUMBER COL EQ NUMBER RPAREN
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE EQ NUMBER COL EQ NUMBER RPAREN
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+
+   79 t_if_clause: LPAREN LIST EQ IF_CLAUSE list_if_clause RPAREN
+
+   80 list_if_clause: if_clause
+   81               | list_if_clause if_clause
+   82               | nil
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+   86 t_switch_case: LPAREN LIST EQ SW_CASE list_switch_case RPAREN
+
+   87 list_switch_case: switch_case
+   88                 | list_switch_case switch_case
+   89                 | nil
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+   91 case_label: expression
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+IDENT (258) 5 6 43 44 52 53 57 61 62 63 64 67 76 77
+NUMBER (259) 4 5 6 7 8 43 44 45 46 52 53 54 57 61 62 63 64 65 66 67
+    73 74 75 76 77 78 83 84 85 90 92 93
+STRING (260) 47
+NIL (261) 22 37 42
+LPAREN (262) 4 5 6 7 8 22 33 38 39 43 44 46 49 50 52 53 54 57 58 61
+    62 63 64 65 66 67 68 72 73 74 75 76 77 78 79 83 84 85 86 90 92
+    93
+RPAREN (263) 4 5 6 7 8 22 33 38 39 43 44 46 49 50 52 53 54 57 58 61
+    62 63 64 65 66 67 68 72 73 74 75 76 77 78 79 83 84 85 86 90 92
+    93
+EQ (264) 4 5 6 7 8 33 38 39 43 44 50 52 53 54 57 58 61 62 63 64 65
+    66 67 68 72 73 74 75 76 77 78 79 83 84 85 86 90 92 93
+TCONST (265) 44
+COL (266) 4 5 6 7 8 43 44 52 53 54 57 61 62 63 64 65 66 67 73 74 75
+    76 77 78 83 84 85 90 92 93
+LINE (267) 4 5 6 7 8 43 44 52 53 54 57 61 62 63 64 65 66 67 73 74 75
+    76 77 78 83 84 85 90 92 93
+TYPE (268) 44 52 53 57 61 62 63 64
+STATEMENT (269) 4 7 8 38 39
+FUNC (270) 5
+USR_FUNC (271) 6
+FNC_DEF (272) 5
+PARAMS (273) 6
+TREE (274) 4 5 6 7 8 43 44 52 53 54 57 61 62 63 64 65 66 67 72 73 74
+    75 76 77 78 83 84 85 90 92 93
+STATEMENTS (275) 6 83 84 90 92
+TIDENT (276) 43
+RESULTS (277) 6
+NAME (278) 5 6 43 67
+STMNT (279) 4 7 8
+VAL (280) 44
+LIST (281) 33 38 39 50 58 68 79 86
+PAR (282) 33
+END_OF_INPUT (283) 1
+NO_OP_CMD (284) 77
+CMD (285) 77
+DECL_CMD (286) 76
+DECL (287) 50 76
+DECLARS (288) 76
+OP (289) 52 53 62 63 64
+S_ASSIGN (290) 52
+LHS (291) 52 53 62 63
+RHS (292) 52 53 62 63
+COLON_EXPR (293) 54
+BASE (294) 54
+LIM (295) 54
+INC (296) 54
+MULTI_ASSIGN (297) 53
+OPERAND (298) 64
+UN_EXPR (299) 64
+INDX_EXPR (300) 57
+FN_EXPR (301) 61
+ARGS (302) 57
+INDEXED_EXPR (303) 57 61
+ARGUMENT (304) 58
+FIELD (305) 61
+BIN_EXPR (306) 62
+BOOL_EXPR (307) 63
+RETURN (308) 73
+BREAK (309) 74
+CONTINUE (310) 75
+IF (311) 78
+IF_EXP (312) 83
+IF_CLAUSE (313) 79 83
+IF_CMDS (314) 78
+WHILE (315) 84
+W_EXP (316) 84
+SW_EXP (317) 85
+SWITCH (318) 85
+SW_CASES (319) 85
+SW_CASE (320) 86 90
+CASE_LABEL (321) 90
+CELL (322) 65
+MATRIX (323) 66
+ROWS (324) 65 66
+ARGUMENT_LIST (325) 68 72
+ARGUMENTS (326) 72
+LMODIFY_EXP (327) 92
+REVAL_EXP (328) 92
+FOR (329) 92
+PFOR (330)
+FUNC_HANDLE (331) 67
+TRY (332) 93
+TRYCODE (333) 93
+CATCHCODE (334) 93
+UNTIL (335)
+U_EXP (336)
+MAGIC_COL (337) 49
+
+
+Nonterminals, with rules where they appear
+
+$accept (83)
+    on left: 0
+module (84)
+    on left: 1, on right: 0
+list_function (85)
+    on left: 2 3, on right: 1 3
+func_def_statement (86)
+    on left: 4, on right: 2 3
+fnc_def (87)
+    on left: 5, on right: 4
+T_func_block (88)
+    on left: 6, on right: 5
+statement (89)
+    on left: 7 8, on right: 40 41
+expression (90)
+    on left: 9 10 11 12 13 14 15 16 17 18 19 20 21, on right: 7 52
+    53 54 57 59 60 61 62 63 64 83 84 85 91 92
+nil (91)
+    on left: 22, on right: 10 34 48 71 82 89
+command (92)
+    on left: 23 24 25 26 27 28 29 30 31 32, on right: 8
+t_list_par (93)
+    on left: 33 34, on right: 6
+list_par (94)
+    on left: 35 36 37, on right: 33 36 51
+t_list_statement (95)
+    on left: 38 39, on right: 6 83 84 90 92 93
+list_statement (96)
+    on left: 40 41 42, on right: 38 41
+ident (97)
+    on left: 43, on right: 9 35 36
+const (98)
+    on left: 44, on right: 11
+variant_val (99)
+    on left: 45 46 47 48 49, on right: 44
+t_list_decl (100)
+    on left: 50, on right: 76
+list_ident (101)
+    on left: 51, on right: 50
+s_assign (102)
+    on left: 52, on right: 13
+multi_assign (103)
+    on left: 53, on right: 21
+colon_expr (104)
+    on left: 54, on right: 12
+indx_expr (105)
+    on left: 55 56, on right: 14
+by_index (106)
+    on left: 57, on right: 55
+t_list_argument (107)
+    on left: 58, on right: 57 72
+list_argument (108)
+    on left: 59 60, on right: 58 60
+by_field (109)
+    on left: 61, on right: 56
+bin_expr (110)
+    on left: 62, on right: 15
+bool_expr (111)
+    on left: 63, on right: 16
+un_expr (112)
+    on left: 64, on right: 17
+cell (113)
+    on left: 65, on right: 18
+matrix (114)
+    on left: 66, on right: 19
+fcn_handle (115)
+    on left: 67, on right: 20
+t_list_of_argument_list (116)
+    on left: 68, on right: 65 66
+list_of_argument_list (117)
+    on left: 69 70 71, on right: 68 70
+argument_list (118)
+    on left: 72, on right: 53 69 70
+return (119)
+    on left: 73, on right: 23
+break (120)
+    on left: 74, on right: 29
+continue (121)
+    on left: 75, on right: 28
+decl_cmd (122)
+    on left: 76, on right: 24
+no_op_cmd (123)
+    on left: 77, on right: 25
+if (124)
+    on left: 78, on right: 26
+t_if_clause (125)
+    on left: 79, on right: 78
+list_if_clause (126)
+    on left: 80 81 82, on right: 79 81
+if_clause (127)
+    on left: 83, on right: 80 81
+while (128)
+    on left: 84, on right: 27
+switch (129)
+    on left: 85, on right: 30
+t_switch_case (130)
+    on left: 86, on right: 85
+list_switch_case (131)
+    on left: 87 88 89, on right: 86 88
+switch_case (132)
+    on left: 90, on right: 87 88
+case_label (133)
+    on left: 91, on right: 90
+for (134)
+    on left: 92, on right: 31
+try (135)
+    on left: 93, on right: 32
+
+
+State 0
+
+    0 $accept: . module $end
+
+    LPAREN  shift, and go to state 1
+
+    module              go to state 2
+    list_function       go to state 3
+    func_def_statement  go to state 4
+
+
+State 1
+
+    4 func_def_statement: LPAREN . TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    TREE  shift, and go to state 5
+
+
+State 2
+
+    0 $accept: module . $end
+
+    $end  shift, and go to state 6
+
+
+State 3
+
+    1 module: list_function . END_OF_INPUT
+    3 list_function: list_function . func_def_statement
+
+    LPAREN        shift, and go to state 1
+    END_OF_INPUT  shift, and go to state 7
+
+    func_def_statement  go to state 8
+
+
+State 4
+
+    2 list_function: func_def_statement .
+
+    $default  reduce using rule 2 (list_function)
+
+
+State 5
+
+    4 func_def_statement: LPAREN TREE . EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    EQ  shift, and go to state 9
+
+
+State 6
+
+    0 $accept: module $end .
+
+    $default  accept
+
+
+State 7
+
+    1 module: list_function END_OF_INPUT .
+
+    $default  reduce using rule 1 (module)
+
+
+State 8
+
+    3 list_function: list_function func_def_statement .
+
+    $default  reduce using rule 3 (list_function)
+
+
+State 9
+
+    4 func_def_statement: LPAREN TREE EQ . STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    STATEMENT  shift, and go to state 10
+
+
+State 10
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT . LINE EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    LINE  shift, and go to state 11
+
+
+State 11
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE . EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    EQ  shift, and go to state 12
+
+
+State 12
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ . NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    NUMBER  shift, and go to state 13
+
+
+State 13
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER . COL EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    COL  shift, and go to state 14
+
+
+State 14
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL . EQ NUMBER STMNT EQ fnc_def RPAREN
+
+    EQ  shift, and go to state 15
+
+
+State 15
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ . NUMBER STMNT EQ fnc_def RPAREN
+
+    NUMBER  shift, and go to state 16
+
+
+State 16
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER . STMNT EQ fnc_def RPAREN
+
+    STMNT  shift, and go to state 17
+
+
+State 17
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT . EQ fnc_def RPAREN
+
+    EQ  shift, and go to state 18
+
+
+State 18
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ . fnc_def RPAREN
+
+    LPAREN  shift, and go to state 19
+
+    fnc_def  go to state 20
+
+
+State 19
+
+    5 fnc_def: LPAREN . TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    TREE  shift, and go to state 21
+
+
+State 20
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def . RPAREN
+
+    RPAREN  shift, and go to state 22
+
+
+State 21
+
+    5 fnc_def: LPAREN TREE . EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    EQ  shift, and go to state 23
+
+
+State 22
+
+    4 func_def_statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ fnc_def RPAREN .
+
+    $default  reduce using rule 4 (func_def_statement)
+
+
+State 23
+
+    5 fnc_def: LPAREN TREE EQ . FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    FNC_DEF  shift, and go to state 24
+
+
+State 24
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF . LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    LINE  shift, and go to state 25
+
+
+State 25
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE . EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    EQ  shift, and go to state 26
+
+
+State 26
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ . NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    NUMBER  shift, and go to state 27
+
+
+State 27
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER . COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    COL  shift, and go to state 28
+
+
+State 28
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL . EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    EQ  shift, and go to state 29
+
+
+State 29
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ . NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    NUMBER  shift, and go to state 30
+
+
+State 30
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER . NAME EQ IDENT FUNC EQ T_func_block RPAREN
+
+    NAME  shift, and go to state 31
+
+
+State 31
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME . EQ IDENT FUNC EQ T_func_block RPAREN
+
+    EQ  shift, and go to state 32
+
+
+State 32
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ . IDENT FUNC EQ T_func_block RPAREN
+
+    IDENT  shift, and go to state 33
+
+
+State 33
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT . FUNC EQ T_func_block RPAREN
+
+    FUNC  shift, and go to state 34
+
+
+State 34
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC . EQ T_func_block RPAREN
+
+    EQ  shift, and go to state 35
+
+
+State 35
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ . T_func_block RPAREN
+
+    LPAREN  shift, and go to state 36
+
+    T_func_block  go to state 37
+
+
+State 36
+
+    6 T_func_block: LPAREN . TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    TREE  shift, and go to state 38
+
+
+State 37
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block . RPAREN
+
+    RPAREN  shift, and go to state 39
+
+
+State 38
+
+    6 T_func_block: LPAREN TREE . EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 40
+
+
+State 39
+
+    5 fnc_def: LPAREN TREE EQ FNC_DEF LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT FUNC EQ T_func_block RPAREN .
+
+    $default  reduce using rule 5 (fnc_def)
+
+
+State 40
+
+    6 T_func_block: LPAREN TREE EQ . USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    USR_FUNC  shift, and go to state 41
+
+
+State 41
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC . LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    LINE  shift, and go to state 42
+
+
+State 42
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE . EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 43
+
+
+State 43
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ . NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 44
+
+
+State 44
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER . COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    COL  shift, and go to state 45
+
+
+State 45
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL . EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 46
+
+
+State 46
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ . NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 47
+
+
+State 47
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER . NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    NAME  shift, and go to state 48
+
+
+State 48
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME . EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 49
+
+
+State 49
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ . IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    IDENT  shift, and go to state 50
+
+
+State 50
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT . PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    PARAMS  shift, and go to state 51
+
+
+State 51
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS . EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 52
+
+
+State 52
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ . t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 53
+
+    nil         go to state 54
+    t_list_par  go to state 55
+
+
+State 53
+
+   22 nil: LPAREN . NIL RPAREN
+   33 t_list_par: LPAREN . LIST EQ PAR list_par RPAREN
+
+    NIL   shift, and go to state 56
+    LIST  shift, and go to state 57
+
+
+State 54
+
+   34 t_list_par: nil .
+
+    $default  reduce using rule 34 (t_list_par)
+
+
+State 55
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par . RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    RESULTS  shift, and go to state 58
+
+
+State 56
+
+   22 nil: LPAREN NIL . RPAREN
+
+    RPAREN  shift, and go to state 59
+
+
+State 57
+
+   33 t_list_par: LPAREN LIST . EQ PAR list_par RPAREN
+
+    EQ  shift, and go to state 60
+
+
+State 58
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS . EQ t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 61
+
+
+State 59
+
+   22 nil: LPAREN NIL RPAREN .
+
+    $default  reduce using rule 22 (nil)
+
+
+State 60
+
+   33 t_list_par: LPAREN LIST EQ . PAR list_par RPAREN
+
+    PAR  shift, and go to state 62
+
+
+State 61
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ . t_list_par STATEMENTS EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 53
+
+    nil         go to state 54
+    t_list_par  go to state 63
+
+
+State 62
+
+   33 t_list_par: LPAREN LIST EQ PAR . list_par RPAREN
+
+    NIL     shift, and go to state 64
+    LPAREN  shift, and go to state 65
+
+    list_par  go to state 66
+    ident     go to state 67
+
+
+State 63
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par . STATEMENTS EQ t_list_statement RPAREN
+
+    STATEMENTS  shift, and go to state 68
+
+
+State 64
+
+   37 list_par: NIL .
+
+    $default  reduce using rule 37 (list_par)
+
+
+State 65
+
+   43 ident: LPAREN . TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    TREE  shift, and go to state 69
+
+
+State 66
+
+   33 t_list_par: LPAREN LIST EQ PAR list_par . RPAREN
+   36 list_par: list_par . ident
+
+    LPAREN  shift, and go to state 65
+    RPAREN  shift, and go to state 70
+
+    ident  go to state 71
+
+
+State 67
+
+   35 list_par: ident .
+
+    $default  reduce using rule 35 (list_par)
+
+
+State 68
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS . EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 72
+
+
+State 69
+
+   43 ident: LPAREN TREE . EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    EQ  shift, and go to state 73
+
+
+State 70
+
+   33 t_list_par: LPAREN LIST EQ PAR list_par RPAREN .
+
+    $default  reduce using rule 33 (t_list_par)
+
+
+State 71
+
+   36 list_par: list_par ident .
+
+    $default  reduce using rule 36 (list_par)
+
+
+State 72
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ . t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 74
+
+    t_list_statement  go to state 75
+
+
+State 73
+
+   43 ident: LPAREN TREE EQ . TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    TIDENT  shift, and go to state 76
+
+
+State 74
+
+   38 t_list_statement: LPAREN . LIST EQ STATEMENT list_statement RPAREN
+   39                 | LPAREN . LIST EQ STATEMENT RPAREN
+
+    LIST  shift, and go to state 77
+
+
+State 75
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement . RPAREN
+
+    RPAREN  shift, and go to state 78
+
+
+State 76
+
+   43 ident: LPAREN TREE EQ TIDENT . LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    LINE  shift, and go to state 79
+
+
+State 77
+
+   38 t_list_statement: LPAREN LIST . EQ STATEMENT list_statement RPAREN
+   39                 | LPAREN LIST . EQ STATEMENT RPAREN
+
+    EQ  shift, and go to state 80
+
+
+State 78
+
+    6 T_func_block: LPAREN TREE EQ USR_FUNC LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT PARAMS EQ t_list_par RESULTS EQ t_list_par STATEMENTS EQ t_list_statement RPAREN .
+
+    $default  reduce using rule 6 (T_func_block)
+
+
+State 79
+
+   43 ident: LPAREN TREE EQ TIDENT LINE . EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    EQ  shift, and go to state 81
+
+
+State 80
+
+   38 t_list_statement: LPAREN LIST EQ . STATEMENT list_statement RPAREN
+   39                 | LPAREN LIST EQ . STATEMENT RPAREN
+
+    STATEMENT  shift, and go to state 82
+
+
+State 81
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ . NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    NUMBER  shift, and go to state 83
+
+
+State 82
+
+   38 t_list_statement: LPAREN LIST EQ STATEMENT . list_statement RPAREN
+   39                 | LPAREN LIST EQ STATEMENT . RPAREN
+
+    NIL     shift, and go to state 84
+    LPAREN  shift, and go to state 85
+    RPAREN  shift, and go to state 86
+
+    statement       go to state 87
+    list_statement  go to state 88
+
+
+State 83
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER . COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    COL  shift, and go to state 89
+
+
+State 84
+
+   42 list_statement: NIL .
+
+    $default  reduce using rule 42 (list_statement)
+
+
+State 85
+
+    7 statement: LPAREN . TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN . TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ command RPAREN
+
+    TREE  shift, and go to state 90
+
+
+State 86
+
+   39 t_list_statement: LPAREN LIST EQ STATEMENT RPAREN .
+
+    $default  reduce using rule 39 (t_list_statement)
+
+
+State 87
+
+   40 list_statement: statement .
+
+    $default  reduce using rule 40 (list_statement)
+
+
+State 88
+
+   38 t_list_statement: LPAREN LIST EQ STATEMENT list_statement . RPAREN
+   41 list_statement: list_statement . statement
+
+    LPAREN  shift, and go to state 85
+    RPAREN  shift, and go to state 91
+
+    statement  go to state 92
+
+
+State 89
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL . EQ NUMBER NAME EQ IDENT RPAREN
+
+    EQ  shift, and go to state 93
+
+
+State 90
+
+    7 statement: LPAREN TREE . EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE . EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ command RPAREN
+
+    EQ  shift, and go to state 94
+
+
+State 91
+
+   38 t_list_statement: LPAREN LIST EQ STATEMENT list_statement RPAREN .
+
+    $default  reduce using rule 38 (t_list_statement)
+
+
+State 92
+
+   41 list_statement: list_statement statement .
+
+    $default  reduce using rule 41 (list_statement)
+
+
+State 93
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL EQ . NUMBER NAME EQ IDENT RPAREN
+
+    NUMBER  shift, and go to state 95
+
+
+State 94
+
+    7 statement: LPAREN TREE EQ . STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ . STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ command RPAREN
+
+    STATEMENT  shift, and go to state 96
+
+
+State 95
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER . NAME EQ IDENT RPAREN
+
+    NAME  shift, and go to state 97
+
+
+State 96
+
+    7 statement: LPAREN TREE EQ STATEMENT . LINE EQ NUMBER COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT . LINE EQ NUMBER COL EQ NUMBER STMNT EQ command RPAREN
+
+    LINE  shift, and go to state 98
+
+
+State 97
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME . EQ IDENT RPAREN
+
+    EQ  shift, and go to state 99
+
+
+State 98
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE . EQ NUMBER COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE . EQ NUMBER COL EQ NUMBER STMNT EQ command RPAREN
+
+    EQ  shift, and go to state 100
+
+
+State 99
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ . IDENT RPAREN
+
+    IDENT  shift, and go to state 101
+
+
+State 100
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ . NUMBER COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ . NUMBER COL EQ NUMBER STMNT EQ command RPAREN
+
+    NUMBER  shift, and go to state 102
+
+
+State 101
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT . RPAREN
+
+    RPAREN  shift, and go to state 103
+
+
+State 102
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER . COL EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ NUMBER . COL EQ NUMBER STMNT EQ command RPAREN
+
+    COL  shift, and go to state 104
+
+
+State 103
+
+   43 ident: LPAREN TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN .
+
+    $default  reduce using rule 43 (ident)
+
+
+State 104
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL . EQ NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL . EQ NUMBER STMNT EQ command RPAREN
+
+    EQ  shift, and go to state 105
+
+
+State 105
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ . NUMBER STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ . NUMBER STMNT EQ command RPAREN
+
+    NUMBER  shift, and go to state 106
+
+
+State 106
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER . STMNT EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER . STMNT EQ command RPAREN
+
+    STMNT  shift, and go to state 107
+
+
+State 107
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT . EQ expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT . EQ command RPAREN
+
+    EQ  shift, and go to state 108
+
+
+State 108
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ . expression RPAREN
+    8          | LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ . command RPAREN
+
+    LPAREN  shift, and go to state 109
+
+    expression    go to state 110
+    nil           go to state 111
+    command       go to state 112
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+    return        go to state 127
+    break         go to state 128
+    continue      go to state 129
+    decl_cmd      go to state 130
+    no_op_cmd     go to state 131
+    if            go to state 132
+    while         go to state 133
+    switch        go to state 134
+    for           go to state 135
+    try           go to state 136
+
+
+State 109
+
+   22 nil: LPAREN . NIL RPAREN
+   43 ident: LPAREN . TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   44 const: LPAREN . TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+   52 s_assign: LPAREN . TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   53 multi_assign: LPAREN . TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+   54 colon_expr: LPAREN . TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+   57 by_index: LPAREN . TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+   61 by_field: LPAREN . TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+   62 bin_expr: LPAREN . TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   63 bool_expr: LPAREN . TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   64 un_expr: LPAREN . TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+   65 cell: LPAREN . TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   66 matrix: LPAREN . TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   67 fcn_handle: LPAREN . TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   73 return: LPAREN . TREE EQ RETURN LINE EQ NUMBER COL EQ NUMBER RPAREN
+   74 break: LPAREN . TREE EQ BREAK LINE EQ NUMBER COL EQ NUMBER RPAREN
+   75 continue: LPAREN . TREE EQ CONTINUE LINE EQ NUMBER COL EQ NUMBER RPAREN
+   76 decl_cmd: LPAREN . TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+   77 no_op_cmd: LPAREN . TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN
+   78 if: LPAREN . TREE EQ IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+   84 while: LPAREN . TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+   85 switch: LPAREN . TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+   92 for: LPAREN . TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+   93 try: LPAREN . TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    NIL   shift, and go to state 56
+    TREE  shift, and go to state 137
+
+
+State 110
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 138
+
+
+State 111
+
+   10 expression: nil .
+
+    $default  reduce using rule 10 (expression)
+
+
+State 112
+
+    8 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ command . RPAREN
+
+    RPAREN  shift, and go to state 139
+
+
+State 113
+
+    9 expression: ident .
+
+    $default  reduce using rule 9 (expression)
+
+
+State 114
+
+   11 expression: const .
+
+    $default  reduce using rule 11 (expression)
+
+
+State 115
+
+   13 expression: s_assign .
+
+    $default  reduce using rule 13 (expression)
+
+
+State 116
+
+   21 expression: multi_assign .
+
+    $default  reduce using rule 21 (expression)
+
+
+State 117
+
+   12 expression: colon_expr .
+
+    $default  reduce using rule 12 (expression)
+
+
+State 118
+
+   14 expression: indx_expr .
+
+    $default  reduce using rule 14 (expression)
+
+
+State 119
+
+   55 indx_expr: by_index .
+
+    $default  reduce using rule 55 (indx_expr)
+
+
+State 120
+
+   56 indx_expr: by_field .
+
+    $default  reduce using rule 56 (indx_expr)
+
+
+State 121
+
+   15 expression: bin_expr .
+
+    $default  reduce using rule 15 (expression)
+
+
+State 122
+
+   16 expression: bool_expr .
+
+    $default  reduce using rule 16 (expression)
+
+
+State 123
+
+   17 expression: un_expr .
+
+    $default  reduce using rule 17 (expression)
+
+
+State 124
+
+   18 expression: cell .
+
+    $default  reduce using rule 18 (expression)
+
+
+State 125
+
+   19 expression: matrix .
+
+    $default  reduce using rule 19 (expression)
+
+
+State 126
+
+   20 expression: fcn_handle .
+
+    $default  reduce using rule 20 (expression)
+
+
+State 127
+
+   23 command: return .
+
+    $default  reduce using rule 23 (command)
+
+
+State 128
+
+   29 command: break .
+
+    $default  reduce using rule 29 (command)
+
+
+State 129
+
+   28 command: continue .
+
+    $default  reduce using rule 28 (command)
+
+
+State 130
+
+   24 command: decl_cmd .
+
+    $default  reduce using rule 24 (command)
+
+
+State 131
+
+   25 command: no_op_cmd .
+
+    $default  reduce using rule 25 (command)
+
+
+State 132
+
+   26 command: if .
+
+    $default  reduce using rule 26 (command)
+
+
+State 133
+
+   27 command: while .
+
+    $default  reduce using rule 27 (command)
+
+
+State 134
+
+   30 command: switch .
+
+    $default  reduce using rule 30 (command)
+
+
+State 135
+
+   31 command: for .
+
+    $default  reduce using rule 31 (command)
+
+
+State 136
+
+   32 command: try .
+
+    $default  reduce using rule 32 (command)
+
+
+State 137
+
+   43 ident: LPAREN TREE . EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   44 const: LPAREN TREE . EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+   52 s_assign: LPAREN TREE . EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   53 multi_assign: LPAREN TREE . EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+   54 colon_expr: LPAREN TREE . EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+   57 by_index: LPAREN TREE . EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+   61 by_field: LPAREN TREE . EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+   62 bin_expr: LPAREN TREE . EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   63 bool_expr: LPAREN TREE . EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   64 un_expr: LPAREN TREE . EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+   65 cell: LPAREN TREE . EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   66 matrix: LPAREN TREE . EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   67 fcn_handle: LPAREN TREE . EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   73 return: LPAREN TREE . EQ RETURN LINE EQ NUMBER COL EQ NUMBER RPAREN
+   74 break: LPAREN TREE . EQ BREAK LINE EQ NUMBER COL EQ NUMBER RPAREN
+   75 continue: LPAREN TREE . EQ CONTINUE LINE EQ NUMBER COL EQ NUMBER RPAREN
+   76 decl_cmd: LPAREN TREE . EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+   77 no_op_cmd: LPAREN TREE . EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN
+   78 if: LPAREN TREE . EQ IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+   84 while: LPAREN TREE . EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+   85 switch: LPAREN TREE . EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+   92 for: LPAREN TREE . EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+   93 try: LPAREN TREE . EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 140
+
+
+State 138
+
+    7 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ expression RPAREN .
+
+    $default  reduce using rule 7 (statement)
+
+
+State 139
+
+    8 statement: LPAREN TREE EQ STATEMENT LINE EQ NUMBER COL EQ NUMBER STMNT EQ command RPAREN .
+
+    $default  reduce using rule 8 (statement)
+
+
+State 140
+
+   43 ident: LPAREN TREE EQ . TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   44 const: LPAREN TREE EQ . TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+   52 s_assign: LPAREN TREE EQ . S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   53 multi_assign: LPAREN TREE EQ . MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+   54 colon_expr: LPAREN TREE EQ . COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+   57 by_index: LPAREN TREE EQ . INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+   61 by_field: LPAREN TREE EQ . FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+   62 bin_expr: LPAREN TREE EQ . BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   63 bool_expr: LPAREN TREE EQ . BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   64 un_expr: LPAREN TREE EQ . UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+   65 cell: LPAREN TREE EQ . CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   66 matrix: LPAREN TREE EQ . MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   67 fcn_handle: LPAREN TREE EQ . FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   73 return: LPAREN TREE EQ . RETURN LINE EQ NUMBER COL EQ NUMBER RPAREN
+   74 break: LPAREN TREE EQ . BREAK LINE EQ NUMBER COL EQ NUMBER RPAREN
+   75 continue: LPAREN TREE EQ . CONTINUE LINE EQ NUMBER COL EQ NUMBER RPAREN
+   76 decl_cmd: LPAREN TREE EQ . DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+   77 no_op_cmd: LPAREN TREE EQ . NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN
+   78 if: LPAREN TREE EQ . IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+   84 while: LPAREN TREE EQ . WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+   85 switch: LPAREN TREE EQ . SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+   92 for: LPAREN TREE EQ . FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+   93 try: LPAREN TREE EQ . TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    TCONST        shift, and go to state 141
+    TIDENT        shift, and go to state 76
+    NO_OP_CMD     shift, and go to state 142
+    DECL_CMD      shift, and go to state 143
+    S_ASSIGN      shift, and go to state 144
+    COLON_EXPR    shift, and go to state 145
+    MULTI_ASSIGN  shift, and go to state 146
+    UN_EXPR       shift, and go to state 147
+    INDX_EXPR     shift, and go to state 148
+    FN_EXPR       shift, and go to state 149
+    BIN_EXPR      shift, and go to state 150
+    BOOL_EXPR     shift, and go to state 151
+    RETURN        shift, and go to state 152
+    BREAK         shift, and go to state 153
+    CONTINUE      shift, and go to state 154
+    IF            shift, and go to state 155
+    WHILE         shift, and go to state 156
+    SWITCH        shift, and go to state 157
+    CELL          shift, and go to state 158
+    MATRIX        shift, and go to state 159
+    FOR           shift, and go to state 160
+    FUNC_HANDLE   shift, and go to state 161
+    TRY           shift, and go to state 162
+
+
+State 141
+
+   44 const: LPAREN TREE EQ TCONST . LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+    LINE  shift, and go to state 163
+
+
+State 142
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD . LINE EQ NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN
+
+    LINE  shift, and go to state 164
+
+
+State 143
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD . LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    LINE  shift, and go to state 165
+
+
+State 144
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN . LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    LINE  shift, and go to state 166
+
+
+State 145
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR . LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    LINE  shift, and go to state 167
+
+
+State 146
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN . LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    LINE  shift, and go to state 168
+
+
+State 147
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR . LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    LINE  shift, and go to state 169
+
+
+State 148
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR . LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    LINE  shift, and go to state 170
+
+
+State 149
+
+   61 by_field: LPAREN TREE EQ FN_EXPR . LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    LINE  shift, and go to state 171
+
+
+State 150
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR . LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    LINE  shift, and go to state 172
+
+
+State 151
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR . LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    LINE  shift, and go to state 173
+
+
+State 152
+
+   73 return: LPAREN TREE EQ RETURN . LINE EQ NUMBER COL EQ NUMBER RPAREN
+
+    LINE  shift, and go to state 174
+
+
+State 153
+
+   74 break: LPAREN TREE EQ BREAK . LINE EQ NUMBER COL EQ NUMBER RPAREN
+
+    LINE  shift, and go to state 175
+
+
+State 154
+
+   75 continue: LPAREN TREE EQ CONTINUE . LINE EQ NUMBER COL EQ NUMBER RPAREN
+
+    LINE  shift, and go to state 176
+
+
+State 155
+
+   78 if: LPAREN TREE EQ IF . LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+
+    LINE  shift, and go to state 177
+
+
+State 156
+
+   84 while: LPAREN TREE EQ WHILE . LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    LINE  shift, and go to state 178
+
+
+State 157
+
+   85 switch: LPAREN TREE EQ SWITCH . LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    LINE  shift, and go to state 179
+
+
+State 158
+
+   65 cell: LPAREN TREE EQ CELL . LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    LINE  shift, and go to state 180
+
+
+State 159
+
+   66 matrix: LPAREN TREE EQ MATRIX . LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    LINE  shift, and go to state 181
+
+
+State 160
+
+   92 for: LPAREN TREE EQ FOR . LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    LINE  shift, and go to state 182
+
+
+State 161
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE . LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    LINE  shift, and go to state 183
+
+
+State 162
+
+   93 try: LPAREN TREE EQ TRY . LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    LINE  shift, and go to state 184
+
+
+State 163
+
+   44 const: LPAREN TREE EQ TCONST LINE . EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+    EQ  shift, and go to state 185
+
+
+State 164
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE . EQ NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN
+
+    EQ  shift, and go to state 186
+
+
+State 165
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE . EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    EQ  shift, and go to state 187
+
+
+State 166
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE . EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 188
+
+
+State 167
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE . EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    EQ  shift, and go to state 189
+
+
+State 168
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE . EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 190
+
+
+State 169
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE . EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    EQ  shift, and go to state 191
+
+
+State 170
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE . EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 192
+
+
+State 171
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE . EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 193
+
+
+State 172
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE . EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 194
+
+
+State 173
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE . EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 195
+
+
+State 174
+
+   73 return: LPAREN TREE EQ RETURN LINE . EQ NUMBER COL EQ NUMBER RPAREN
+
+    EQ  shift, and go to state 196
+
+
+State 175
+
+   74 break: LPAREN TREE EQ BREAK LINE . EQ NUMBER COL EQ NUMBER RPAREN
+
+    EQ  shift, and go to state 197
+
+
+State 176
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE . EQ NUMBER COL EQ NUMBER RPAREN
+
+    EQ  shift, and go to state 198
+
+
+State 177
+
+   78 if: LPAREN TREE EQ IF LINE . EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+
+    EQ  shift, and go to state 199
+
+
+State 178
+
+   84 while: LPAREN TREE EQ WHILE LINE . EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 200
+
+
+State 179
+
+   85 switch: LPAREN TREE EQ SWITCH LINE . EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    EQ  shift, and go to state 201
+
+
+State 180
+
+   65 cell: LPAREN TREE EQ CELL LINE . EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    EQ  shift, and go to state 202
+
+
+State 181
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE . EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    EQ  shift, and go to state 203
+
+
+State 182
+
+   92 for: LPAREN TREE EQ FOR LINE . EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 204
+
+
+State 183
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE . EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    EQ  shift, and go to state 205
+
+
+State 184
+
+   93 try: LPAREN TREE EQ TRY LINE . EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 206
+
+
+State 185
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ . NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+    NUMBER  shift, and go to state 207
+
+
+State 186
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ . NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN
+
+    NUMBER  shift, and go to state 208
+
+
+State 187
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ . NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    NUMBER  shift, and go to state 209
+
+
+State 188
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ . NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 210
+
+
+State 189
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ . NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    NUMBER  shift, and go to state 211
+
+
+State 190
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ . NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 212
+
+
+State 191
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ . NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    NUMBER  shift, and go to state 213
+
+
+State 192
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ . NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    NUMBER  shift, and go to state 214
+
+
+State 193
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ . NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    NUMBER  shift, and go to state 215
+
+
+State 194
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ . NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 216
+
+
+State 195
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ . NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 217
+
+
+State 196
+
+   73 return: LPAREN TREE EQ RETURN LINE EQ . NUMBER COL EQ NUMBER RPAREN
+
+    NUMBER  shift, and go to state 218
+
+
+State 197
+
+   74 break: LPAREN TREE EQ BREAK LINE EQ . NUMBER COL EQ NUMBER RPAREN
+
+    NUMBER  shift, and go to state 219
+
+
+State 198
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE EQ . NUMBER COL EQ NUMBER RPAREN
+
+    NUMBER  shift, and go to state 220
+
+
+State 199
+
+   78 if: LPAREN TREE EQ IF LINE EQ . NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+
+    NUMBER  shift, and go to state 221
+
+
+State 200
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ . NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 222
+
+
+State 201
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ . NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    NUMBER  shift, and go to state 223
+
+
+State 202
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ . NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    NUMBER  shift, and go to state 224
+
+
+State 203
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ . NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    NUMBER  shift, and go to state 225
+
+
+State 204
+
+   92 for: LPAREN TREE EQ FOR LINE EQ . NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 226
+
+
+State 205
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ . NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    NUMBER  shift, and go to state 227
+
+
+State 206
+
+   93 try: LPAREN TREE EQ TRY LINE EQ . NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 228
+
+
+State 207
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER . COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+    COL  shift, and go to state 229
+
+
+State 208
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER . COL EQ NUMBER CMD EQ IDENT RPAREN
+
+    COL  shift, and go to state 230
+
+
+State 209
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER . COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    COL  shift, and go to state 231
+
+
+State 210
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER . COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    COL  shift, and go to state 232
+
+
+State 211
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER . COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    COL  shift, and go to state 233
+
+
+State 212
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER . COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    COL  shift, and go to state 234
+
+
+State 213
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER . COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    COL  shift, and go to state 235
+
+
+State 214
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER . COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    COL  shift, and go to state 236
+
+
+State 215
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER . COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    COL  shift, and go to state 237
+
+
+State 216
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER . COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    COL  shift, and go to state 238
+
+
+State 217
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER . COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    COL  shift, and go to state 239
+
+
+State 218
+
+   73 return: LPAREN TREE EQ RETURN LINE EQ NUMBER . COL EQ NUMBER RPAREN
+
+    COL  shift, and go to state 240
+
+
+State 219
+
+   74 break: LPAREN TREE EQ BREAK LINE EQ NUMBER . COL EQ NUMBER RPAREN
+
+    COL  shift, and go to state 241
+
+
+State 220
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE EQ NUMBER . COL EQ NUMBER RPAREN
+
+    COL  shift, and go to state 242
+
+
+State 221
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER . COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+
+    COL  shift, and go to state 243
+
+
+State 222
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER . COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    COL  shift, and go to state 244
+
+
+State 223
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER . COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    COL  shift, and go to state 245
+
+
+State 224
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER . COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    COL  shift, and go to state 246
+
+
+State 225
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER . COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    COL  shift, and go to state 247
+
+
+State 226
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER . COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    COL  shift, and go to state 248
+
+
+State 227
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER . COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    COL  shift, and go to state 249
+
+
+State 228
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER . COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    COL  shift, and go to state 250
+
+
+State 229
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL . EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+    EQ  shift, and go to state 251
+
+
+State 230
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL . EQ NUMBER CMD EQ IDENT RPAREN
+
+    EQ  shift, and go to state 252
+
+
+State 231
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL . EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    EQ  shift, and go to state 253
+
+
+State 232
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL . EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 254
+
+
+State 233
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL . EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    EQ  shift, and go to state 255
+
+
+State 234
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL . EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 256
+
+
+State 235
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL . EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    EQ  shift, and go to state 257
+
+
+State 236
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL . EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 258
+
+
+State 237
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL . EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 259
+
+
+State 238
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL . EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 260
+
+
+State 239
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL . EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 261
+
+
+State 240
+
+   73 return: LPAREN TREE EQ RETURN LINE EQ NUMBER COL . EQ NUMBER RPAREN
+
+    EQ  shift, and go to state 262
+
+
+State 241
+
+   74 break: LPAREN TREE EQ BREAK LINE EQ NUMBER COL . EQ NUMBER RPAREN
+
+    EQ  shift, and go to state 263
+
+
+State 242
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE EQ NUMBER COL . EQ NUMBER RPAREN
+
+    EQ  shift, and go to state 264
+
+
+State 243
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL . EQ NUMBER IF_CMDS EQ t_if_clause RPAREN
+
+    EQ  shift, and go to state 265
+
+
+State 244
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL . EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 266
+
+
+State 245
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL . EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    EQ  shift, and go to state 267
+
+
+State 246
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL . EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    EQ  shift, and go to state 268
+
+
+State 247
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL . EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    EQ  shift, and go to state 269
+
+
+State 248
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL . EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 270
+
+
+State 249
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL . EQ NUMBER NAME EQ IDENT RPAREN
+
+    EQ  shift, and go to state 271
+
+
+State 250
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL . EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 272
+
+
+State 251
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ . NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+    NUMBER  shift, and go to state 273
+
+
+State 252
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ . NUMBER CMD EQ IDENT RPAREN
+
+    NUMBER  shift, and go to state 274
+
+
+State 253
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ . NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    NUMBER  shift, and go to state 275
+
+
+State 254
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ . NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 276
+
+
+State 255
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ . NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    NUMBER  shift, and go to state 277
+
+
+State 256
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ . NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 278
+
+
+State 257
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ . NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    NUMBER  shift, and go to state 279
+
+
+State 258
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ . NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    NUMBER  shift, and go to state 280
+
+
+State 259
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ . NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    NUMBER  shift, and go to state 281
+
+
+State 260
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ . NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 282
+
+
+State 261
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ . NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 283
+
+
+State 262
+
+   73 return: LPAREN TREE EQ RETURN LINE EQ NUMBER COL EQ . NUMBER RPAREN
+
+    NUMBER  shift, and go to state 284
+
+
+State 263
+
+   74 break: LPAREN TREE EQ BREAK LINE EQ NUMBER COL EQ . NUMBER RPAREN
+
+    NUMBER  shift, and go to state 285
+
+
+State 264
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE EQ NUMBER COL EQ . NUMBER RPAREN
+
+    NUMBER  shift, and go to state 286
+
+
+State 265
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL EQ . NUMBER IF_CMDS EQ t_if_clause RPAREN
+
+    NUMBER  shift, and go to state 287
+
+
+State 266
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ . NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 288
+
+
+State 267
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ . NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    NUMBER  shift, and go to state 289
+
+
+State 268
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL EQ . NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    NUMBER  shift, and go to state 290
+
+
+State 269
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL EQ . NUMBER ROWS EQ t_list_of_argument_list RPAREN
+
+    NUMBER  shift, and go to state 291
+
+
+State 270
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ . NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 292
+
+
+State 271
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ . NUMBER NAME EQ IDENT RPAREN
+
+    NUMBER  shift, and go to state 293
+
+
+State 272
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ . NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 294
+
+
+State 273
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER . TYPE EQ IDENT VAL EQ variant_val RPAREN
+
+    TYPE  shift, and go to state 295
+
+
+State 274
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER . CMD EQ IDENT RPAREN
+
+    CMD  shift, and go to state 296
+
+
+State 275
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER . DECL EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    DECL  shift, and go to state 297
+
+
+State 276
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER . TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    TYPE  shift, and go to state 298
+
+
+State 277
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER . BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    BASE  shift, and go to state 299
+
+
+State 278
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER . TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    TYPE  shift, and go to state 300
+
+
+State 279
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER . TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    TYPE  shift, and go to state 301
+
+
+State 280
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER . TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    TYPE  shift, and go to state 302
+
+
+State 281
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER . TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    TYPE  shift, and go to state 303
+
+
+State 282
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER . TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    TYPE  shift, and go to state 304
+
+
+State 283
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER . TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    TYPE  shift, and go to state 305
+
+
+State 284
+
+   73 return: LPAREN TREE EQ RETURN LINE EQ NUMBER COL EQ NUMBER . RPAREN
+
+    RPAREN  shift, and go to state 306
+
+
+State 285
+
+   74 break: LPAREN TREE EQ BREAK LINE EQ NUMBER COL EQ NUMBER . RPAREN
+
+    RPAREN  shift, and go to state 307
+
+
+State 286
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE EQ NUMBER COL EQ NUMBER . RPAREN
+
+    RPAREN  shift, and go to state 308
+
+
+State 287
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL EQ NUMBER . IF_CMDS EQ t_if_clause RPAREN
+
+    IF_CMDS  shift, and go to state 309
+
+
+State 288
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER . W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    W_EXP  shift, and go to state 310
+
+
+State 289
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER . SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    SW_EXP  shift, and go to state 311
+
+
+State 290
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER . ROWS EQ t_list_of_argument_list RPAREN
+
+    ROWS  shift, and go to state 312
+
+
+State 291
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER . ROWS EQ t_list_of_argument_list RPAREN
+
+    ROWS  shift, and go to state 313
+
+
+State 292
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER . LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    LMODIFY_EXP  shift, and go to state 314
+
+
+State 293
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER . NAME EQ IDENT RPAREN
+
+    NAME  shift, and go to state 315
+
+
+State 294
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER . TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    TRYCODE  shift, and go to state 316
+
+
+State 295
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE . EQ IDENT VAL EQ variant_val RPAREN
+
+    EQ  shift, and go to state 317
+
+
+State 296
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD . EQ IDENT RPAREN
+
+    EQ  shift, and go to state 318
+
+
+State 297
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL . EQ IDENT DECLARS EQ t_list_decl RPAREN
+
+    EQ  shift, and go to state 319
+
+
+State 298
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE . EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 320
+
+
+State 299
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE . EQ expression LIM EQ expression INC EQ expression RPAREN
+
+    EQ  shift, and go to state 321
+
+
+State 300
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE . EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 322
+
+
+State 301
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE . EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    EQ  shift, and go to state 323
+
+
+State 302
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE . EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 324
+
+
+State 303
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE . EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 325
+
+
+State 304
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE . EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 326
+
+
+State 305
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE . EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 327
+
+
+State 306
+
+   73 return: LPAREN TREE EQ RETURN LINE EQ NUMBER COL EQ NUMBER RPAREN .
+
+    $default  reduce using rule 73 (return)
+
+
+State 307
+
+   74 break: LPAREN TREE EQ BREAK LINE EQ NUMBER COL EQ NUMBER RPAREN .
+
+    $default  reduce using rule 74 (break)
+
+
+State 308
+
+   75 continue: LPAREN TREE EQ CONTINUE LINE EQ NUMBER COL EQ NUMBER RPAREN .
+
+    $default  reduce using rule 75 (continue)
+
+
+State 309
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS . EQ t_if_clause RPAREN
+
+    EQ  shift, and go to state 328
+
+
+State 310
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP . EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 329
+
+
+State 311
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP . EQ expression SW_CASES EQ t_switch_case RPAREN
+
+    EQ  shift, and go to state 330
+
+
+State 312
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS . EQ t_list_of_argument_list RPAREN
+
+    EQ  shift, and go to state 331
+
+
+State 313
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS . EQ t_list_of_argument_list RPAREN
+
+    EQ  shift, and go to state 332
+
+
+State 314
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP . EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 333
+
+
+State 315
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME . EQ IDENT RPAREN
+
+    EQ  shift, and go to state 334
+
+
+State 316
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE . EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 335
+
+
+State 317
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ . IDENT VAL EQ variant_val RPAREN
+
+    IDENT  shift, and go to state 336
+
+
+State 318
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD EQ . IDENT RPAREN
+
+    IDENT  shift, and go to state 337
+
+
+State 319
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ . IDENT DECLARS EQ t_list_decl RPAREN
+
+    IDENT  shift, and go to state 338
+
+
+State 320
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ . NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 339
+
+
+State 321
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ . expression LIM EQ expression INC EQ expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 341
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 322
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ . NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 342
+
+
+State 323
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ . NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+
+    NUMBER  shift, and go to state 343
+
+
+State 324
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ . IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    IDENT  shift, and go to state 344
+
+
+State 325
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ . IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    IDENT  shift, and go to state 345
+
+
+State 326
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ . NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 346
+
+
+State 327
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ . NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    NUMBER  shift, and go to state 347
+
+
+State 328
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ . t_if_clause RPAREN
+
+    LPAREN  shift, and go to state 348
+
+    t_if_clause  go to state 349
+
+
+State 329
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ . expression STATEMENTS EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 350
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 330
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ . expression SW_CASES EQ t_switch_case RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 351
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 331
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ . t_list_of_argument_list RPAREN
+
+    LPAREN  shift, and go to state 352
+
+    t_list_of_argument_list  go to state 353
+
+
+State 332
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ . t_list_of_argument_list RPAREN
+
+    LPAREN  shift, and go to state 352
+
+    t_list_of_argument_list  go to state 354
+
+
+State 333
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ . expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 355
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 334
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ . IDENT RPAREN
+
+    IDENT  shift, and go to state 356
+
+
+State 335
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ . t_list_statement CATCHCODE EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 74
+
+    t_list_statement  go to state 357
+
+
+State 336
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT . VAL EQ variant_val RPAREN
+
+    VAL  shift, and go to state 358
+
+
+State 337
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD EQ IDENT . RPAREN
+
+    RPAREN  shift, and go to state 359
+
+
+State 338
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT . DECLARS EQ t_list_decl RPAREN
+
+    DECLARS  shift, and go to state 360
+
+
+State 339
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER . OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    OP  shift, and go to state 361
+
+
+State 340
+
+   22 nil: LPAREN . NIL RPAREN
+   43 ident: LPAREN . TREE EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   44 const: LPAREN . TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+   52 s_assign: LPAREN . TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   53 multi_assign: LPAREN . TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+   54 colon_expr: LPAREN . TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+   57 by_index: LPAREN . TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+   61 by_field: LPAREN . TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+   62 bin_expr: LPAREN . TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   63 bool_expr: LPAREN . TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   64 un_expr: LPAREN . TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+   65 cell: LPAREN . TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   66 matrix: LPAREN . TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   67 fcn_handle: LPAREN . TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    NIL   shift, and go to state 56
+    TREE  shift, and go to state 362
+
+
+State 341
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression . LIM EQ expression INC EQ expression RPAREN
+
+    LIM  shift, and go to state 363
+
+
+State 342
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER . OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    OP  shift, and go to state 364
+
+
+State 343
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER . OP EQ IDENT OPERAND EQ expression RPAREN
+
+    OP  shift, and go to state 365
+
+
+State 344
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT . ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    ARGS  shift, and go to state 366
+
+
+State 345
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT . FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    FIELD  shift, and go to state 367
+
+
+State 346
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER . OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    OP  shift, and go to state 368
+
+
+State 347
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER . OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    OP  shift, and go to state 369
+
+
+State 348
+
+   79 t_if_clause: LPAREN . LIST EQ IF_CLAUSE list_if_clause RPAREN
+
+    LIST  shift, and go to state 370
+
+
+State 349
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause . RPAREN
+
+    RPAREN  shift, and go to state 371
+
+
+State 350
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression . STATEMENTS EQ t_list_statement RPAREN
+
+    STATEMENTS  shift, and go to state 372
+
+
+State 351
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression . SW_CASES EQ t_switch_case RPAREN
+
+    SW_CASES  shift, and go to state 373
+
+
+State 352
+
+   68 t_list_of_argument_list: LPAREN . LIST EQ ARGUMENT_LIST list_of_argument_list RPAREN
+
+    LIST  shift, and go to state 374
+
+
+State 353
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list . RPAREN
+
+    RPAREN  shift, and go to state 375
+
+
+State 354
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list . RPAREN
+
+    RPAREN  shift, and go to state 376
+
+
+State 355
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression . REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    REVAL_EXP  shift, and go to state 377
+
+
+State 356
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT . RPAREN
+
+    RPAREN  shift, and go to state 378
+
+
+State 357
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement . CATCHCODE EQ t_list_statement RPAREN
+
+    CATCHCODE  shift, and go to state 379
+
+
+State 358
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL . EQ variant_val RPAREN
+
+    EQ  shift, and go to state 380
+
+
+State 359
+
+   77 no_op_cmd: LPAREN TREE EQ NO_OP_CMD LINE EQ NUMBER COL EQ NUMBER CMD EQ IDENT RPAREN .
+
+    $default  reduce using rule 77 (no_op_cmd)
+
+
+State 360
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS . EQ t_list_decl RPAREN
+
+    EQ  shift, and go to state 381
+
+
+State 361
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP . EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 382
+
+
+State 362
+
+   43 ident: LPAREN TREE . EQ TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   44 const: LPAREN TREE . EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+   52 s_assign: LPAREN TREE . EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   53 multi_assign: LPAREN TREE . EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+   54 colon_expr: LPAREN TREE . EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+   57 by_index: LPAREN TREE . EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+   61 by_field: LPAREN TREE . EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+   62 bin_expr: LPAREN TREE . EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   63 bool_expr: LPAREN TREE . EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   64 un_expr: LPAREN TREE . EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+   65 cell: LPAREN TREE . EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   66 matrix: LPAREN TREE . EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   67 fcn_handle: LPAREN TREE . EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    EQ  shift, and go to state 383
+
+
+State 363
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM . EQ expression INC EQ expression RPAREN
+
+    EQ  shift, and go to state 384
+
+
+State 364
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP . EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 385
+
+
+State 365
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP . EQ IDENT OPERAND EQ expression RPAREN
+
+    EQ  shift, and go to state 386
+
+
+State 366
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS . EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 387
+
+
+State 367
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD . EQ IDENT INDEXED_EXPR EQ expression RPAREN
+
+    EQ  shift, and go to state 388
+
+
+State 368
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP . EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 389
+
+
+State 369
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP . EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 390
+
+
+State 370
+
+   79 t_if_clause: LPAREN LIST . EQ IF_CLAUSE list_if_clause RPAREN
+
+    EQ  shift, and go to state 391
+
+
+State 371
+
+   78 if: LPAREN TREE EQ IF LINE EQ NUMBER COL EQ NUMBER IF_CMDS EQ t_if_clause RPAREN .
+
+    $default  reduce using rule 78 (if)
+
+
+State 372
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS . EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 392
+
+
+State 373
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES . EQ t_switch_case RPAREN
+
+    EQ  shift, and go to state 393
+
+
+State 374
+
+   68 t_list_of_argument_list: LPAREN LIST . EQ ARGUMENT_LIST list_of_argument_list RPAREN
+
+    EQ  shift, and go to state 394
+
+
+State 375
+
+   65 cell: LPAREN TREE EQ CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN .
+
+    $default  reduce using rule 65 (cell)
+
+
+State 376
+
+   66 matrix: LPAREN TREE EQ MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN .
+
+    $default  reduce using rule 66 (matrix)
+
+
+State 377
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP . EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 395
+
+
+State 378
+
+   67 fcn_handle: LPAREN TREE EQ FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN .
+
+    $default  reduce using rule 67 (fcn_handle)
+
+
+State 379
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE . EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 396
+
+
+State 380
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ . variant_val RPAREN
+
+    NUMBER  shift, and go to state 397
+    STRING  shift, and go to state 398
+    LPAREN  shift, and go to state 399
+
+    nil          go to state 400
+    variant_val  go to state 401
+
+
+State 381
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ . t_list_decl RPAREN
+
+    LPAREN  shift, and go to state 402
+
+    t_list_decl  go to state 403
+
+
+State 382
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ . IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    IDENT  shift, and go to state 404
+
+
+State 383
+
+   43 ident: LPAREN TREE EQ . TIDENT LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+   44 const: LPAREN TREE EQ . TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN
+   52 s_assign: LPAREN TREE EQ . S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   53 multi_assign: LPAREN TREE EQ . MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN
+   54 colon_expr: LPAREN TREE EQ . COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN
+   57 by_index: LPAREN TREE EQ . INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN
+   61 by_field: LPAREN TREE EQ . FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN
+   62 bin_expr: LPAREN TREE EQ . BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   63 bool_expr: LPAREN TREE EQ . BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN
+   64 un_expr: LPAREN TREE EQ . UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN
+   65 cell: LPAREN TREE EQ . CELL LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   66 matrix: LPAREN TREE EQ . MATRIX LINE EQ NUMBER COL EQ NUMBER ROWS EQ t_list_of_argument_list RPAREN
+   67 fcn_handle: LPAREN TREE EQ . FUNC_HANDLE LINE EQ NUMBER COL EQ NUMBER NAME EQ IDENT RPAREN
+
+    TCONST        shift, and go to state 141
+    TIDENT        shift, and go to state 76
+    S_ASSIGN      shift, and go to state 144
+    COLON_EXPR    shift, and go to state 145
+    MULTI_ASSIGN  shift, and go to state 146
+    UN_EXPR       shift, and go to state 147
+    INDX_EXPR     shift, and go to state 148
+    FN_EXPR       shift, and go to state 149
+    BIN_EXPR      shift, and go to state 150
+    BOOL_EXPR     shift, and go to state 151
+    CELL          shift, and go to state 158
+    MATRIX        shift, and go to state 159
+    FUNC_HANDLE   shift, and go to state 161
+
+
+State 384
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ . expression INC EQ expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 405
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 385
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ . IDENT LHS EQ argument_list RHS EQ expression RPAREN
+
+    IDENT  shift, and go to state 406
+
+
+State 386
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ . IDENT OPERAND EQ expression RPAREN
+
+    IDENT  shift, and go to state 407
+
+
+State 387
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ . t_list_argument INDEXED_EXPR EQ expression RPAREN
+
+    LPAREN  shift, and go to state 408
+
+    t_list_argument  go to state 409
+
+
+State 388
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ . IDENT INDEXED_EXPR EQ expression RPAREN
+
+    IDENT  shift, and go to state 410
+
+
+State 389
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ . IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    IDENT  shift, and go to state 411
+
+
+State 390
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ . IDENT LHS EQ expression RHS EQ expression RPAREN
+
+    IDENT  shift, and go to state 412
+
+
+State 391
+
+   79 t_if_clause: LPAREN LIST EQ . IF_CLAUSE list_if_clause RPAREN
+
+    IF_CLAUSE  shift, and go to state 413
+
+
+State 392
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ . t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 74
+
+    t_list_statement  go to state 414
+
+
+State 393
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ . t_switch_case RPAREN
+
+    LPAREN  shift, and go to state 415
+
+    t_switch_case  go to state 416
+
+
+State 394
+
+   68 t_list_of_argument_list: LPAREN LIST EQ . ARGUMENT_LIST list_of_argument_list RPAREN
+
+    ARGUMENT_LIST  shift, and go to state 417
+
+
+State 395
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ . expression STATEMENTS EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 418
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 396
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ . t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 74
+
+    t_list_statement  go to state 419
+
+
+State 397
+
+   45 variant_val: NUMBER .
+
+    $default  reduce using rule 45 (variant_val)
+
+
+State 398
+
+   47 variant_val: STRING .
+
+    $default  reduce using rule 47 (variant_val)
+
+
+State 399
+
+   22 nil: LPAREN . NIL RPAREN
+   46 variant_val: LPAREN . NUMBER NUMBER RPAREN
+   49            | LPAREN . MAGIC_COL RPAREN
+
+    NUMBER     shift, and go to state 420
+    NIL        shift, and go to state 56
+    MAGIC_COL  shift, and go to state 421
+
+
+State 400
+
+   48 variant_val: nil .
+
+    $default  reduce using rule 48 (variant_val)
+
+
+State 401
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val . RPAREN
+
+    RPAREN  shift, and go to state 422
+
+
+State 402
+
+   50 t_list_decl: LPAREN . LIST EQ DECL list_ident RPAREN
+
+    LIST  shift, and go to state 423
+
+
+State 403
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl . RPAREN
+
+    RPAREN  shift, and go to state 424
+
+
+State 404
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT . LHS EQ expression RHS EQ expression RPAREN
+
+    LHS  shift, and go to state 425
+
+
+State 405
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression . INC EQ expression RPAREN
+
+    INC  shift, and go to state 426
+
+
+State 406
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT . LHS EQ argument_list RHS EQ expression RPAREN
+
+    LHS  shift, and go to state 427
+
+
+State 407
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT . OPERAND EQ expression RPAREN
+
+    OPERAND  shift, and go to state 428
+
+
+State 408
+
+   58 t_list_argument: LPAREN . LIST EQ ARGUMENT list_argument RPAREN
+
+    LIST  shift, and go to state 429
+
+
+State 409
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument . INDEXED_EXPR EQ expression RPAREN
+
+    INDEXED_EXPR  shift, and go to state 430
+
+
+State 410
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT . INDEXED_EXPR EQ expression RPAREN
+
+    INDEXED_EXPR  shift, and go to state 431
+
+
+State 411
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT . LHS EQ expression RHS EQ expression RPAREN
+
+    LHS  shift, and go to state 432
+
+
+State 412
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT . LHS EQ expression RHS EQ expression RPAREN
+
+    LHS  shift, and go to state 433
+
+
+State 413
+
+   79 t_if_clause: LPAREN LIST EQ IF_CLAUSE . list_if_clause RPAREN
+
+    LPAREN  shift, and go to state 434
+
+    nil             go to state 435
+    list_if_clause  go to state 436
+    if_clause       go to state 437
+
+
+State 414
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement . RPAREN
+
+    RPAREN  shift, and go to state 438
+
+
+State 415
+
+   86 t_switch_case: LPAREN . LIST EQ SW_CASE list_switch_case RPAREN
+
+    LIST  shift, and go to state 439
+
+
+State 416
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case . RPAREN
+
+    RPAREN  shift, and go to state 440
+
+
+State 417
+
+   68 t_list_of_argument_list: LPAREN LIST EQ ARGUMENT_LIST . list_of_argument_list RPAREN
+
+    LPAREN  shift, and go to state 441
+
+    nil                    go to state 442
+    list_of_argument_list  go to state 443
+    argument_list          go to state 444
+
+
+State 418
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression . STATEMENTS EQ t_list_statement RPAREN
+
+    STATEMENTS  shift, and go to state 445
+
+
+State 419
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement . RPAREN
+
+    RPAREN  shift, and go to state 446
+
+
+State 420
+
+   46 variant_val: LPAREN NUMBER . NUMBER RPAREN
+
+    NUMBER  shift, and go to state 447
+
+
+State 421
+
+   49 variant_val: LPAREN MAGIC_COL . RPAREN
+
+    RPAREN  shift, and go to state 448
+
+
+State 422
+
+   44 const: LPAREN TREE EQ TCONST LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT VAL EQ variant_val RPAREN .
+
+    $default  reduce using rule 44 (const)
+
+
+State 423
+
+   50 t_list_decl: LPAREN LIST . EQ DECL list_ident RPAREN
+
+    EQ  shift, and go to state 449
+
+
+State 424
+
+   76 decl_cmd: LPAREN TREE EQ DECL_CMD LINE EQ NUMBER COL EQ NUMBER DECL EQ IDENT DECLARS EQ t_list_decl RPAREN .
+
+    $default  reduce using rule 76 (decl_cmd)
+
+
+State 425
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS . EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 450
+
+
+State 426
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC . EQ expression RPAREN
+
+    EQ  shift, and go to state 451
+
+
+State 427
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS . EQ argument_list RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 452
+
+
+State 428
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND . EQ expression RPAREN
+
+    EQ  shift, and go to state 453
+
+
+State 429
+
+   58 t_list_argument: LPAREN LIST . EQ ARGUMENT list_argument RPAREN
+
+    EQ  shift, and go to state 454
+
+
+State 430
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR . EQ expression RPAREN
+
+    EQ  shift, and go to state 455
+
+
+State 431
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR . EQ expression RPAREN
+
+    EQ  shift, and go to state 456
+
+
+State 432
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS . EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 457
+
+
+State 433
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS . EQ expression RHS EQ expression RPAREN
+
+    EQ  shift, and go to state 458
+
+
+State 434
+
+   22 nil: LPAREN . NIL RPAREN
+   83 if_clause: LPAREN . TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    NIL   shift, and go to state 56
+    TREE  shift, and go to state 459
+
+
+State 435
+
+   82 list_if_clause: nil .
+
+    $default  reduce using rule 82 (list_if_clause)
+
+
+State 436
+
+   79 t_if_clause: LPAREN LIST EQ IF_CLAUSE list_if_clause . RPAREN
+   81 list_if_clause: list_if_clause . if_clause
+
+    LPAREN  shift, and go to state 460
+    RPAREN  shift, and go to state 461
+
+    if_clause  go to state 462
+
+
+State 437
+
+   80 list_if_clause: if_clause .
+
+    $default  reduce using rule 80 (list_if_clause)
+
+
+State 438
+
+   84 while: LPAREN TREE EQ WHILE LINE EQ NUMBER COL EQ NUMBER W_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN .
+
+    $default  reduce using rule 84 (while)
+
+
+State 439
+
+   86 t_switch_case: LPAREN LIST . EQ SW_CASE list_switch_case RPAREN
+
+    EQ  shift, and go to state 463
+
+
+State 440
+
+   85 switch: LPAREN TREE EQ SWITCH LINE EQ NUMBER COL EQ NUMBER SW_EXP EQ expression SW_CASES EQ t_switch_case RPAREN .
+
+    $default  reduce using rule 85 (switch)
+
+
+State 441
+
+   22 nil: LPAREN . NIL RPAREN
+   72 argument_list: LPAREN . TREE EQ ARGUMENT_LIST ARGUMENTS EQ t_list_argument RPAREN
+
+    NIL   shift, and go to state 56
+    TREE  shift, and go to state 464
+
+
+State 442
+
+   71 list_of_argument_list: nil .
+
+    $default  reduce using rule 71 (list_of_argument_list)
+
+
+State 443
+
+   68 t_list_of_argument_list: LPAREN LIST EQ ARGUMENT_LIST list_of_argument_list . RPAREN
+   70 list_of_argument_list: list_of_argument_list . argument_list
+
+    LPAREN  shift, and go to state 465
+    RPAREN  shift, and go to state 466
+
+    argument_list  go to state 467
+
+
+State 444
+
+   69 list_of_argument_list: argument_list .
+
+    $default  reduce using rule 69 (list_of_argument_list)
+
+
+State 445
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS . EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 468
+
+
+State 446
+
+   93 try: LPAREN TREE EQ TRY LINE EQ NUMBER COL EQ NUMBER TRYCODE EQ t_list_statement CATCHCODE EQ t_list_statement RPAREN .
+
+    $default  reduce using rule 93 (try)
+
+
+State 447
+
+   46 variant_val: LPAREN NUMBER NUMBER . RPAREN
+
+    RPAREN  shift, and go to state 469
+
+
+State 448
+
+   49 variant_val: LPAREN MAGIC_COL RPAREN .
+
+    $default  reduce using rule 49 (variant_val)
+
+
+State 449
+
+   50 t_list_decl: LPAREN LIST EQ . DECL list_ident RPAREN
+
+    DECL  shift, and go to state 470
+
+
+State 450
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ . expression RHS EQ expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 471
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 451
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 472
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 452
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ . argument_list RHS EQ expression RPAREN
+
+    LPAREN  shift, and go to state 465
+
+    argument_list  go to state 473
+
+
+State 453
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 474
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 454
+
+   58 t_list_argument: LPAREN LIST EQ . ARGUMENT list_argument RPAREN
+
+    ARGUMENT  shift, and go to state 475
+
+
+State 455
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 476
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 456
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 477
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 457
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ . expression RHS EQ expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 478
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 458
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ . expression RHS EQ expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 479
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 459
+
+   83 if_clause: LPAREN TREE . EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 480
+
+
+State 460
+
+   83 if_clause: LPAREN . TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    TREE  shift, and go to state 459
+
+
+State 461
+
+   79 t_if_clause: LPAREN LIST EQ IF_CLAUSE list_if_clause RPAREN .
+
+    $default  reduce using rule 79 (t_if_clause)
+
+
+State 462
+
+   81 list_if_clause: list_if_clause if_clause .
+
+    $default  reduce using rule 81 (list_if_clause)
+
+
+State 463
+
+   86 t_switch_case: LPAREN LIST EQ . SW_CASE list_switch_case RPAREN
+
+    SW_CASE  shift, and go to state 481
+
+
+State 464
+
+   72 argument_list: LPAREN TREE . EQ ARGUMENT_LIST ARGUMENTS EQ t_list_argument RPAREN
+
+    EQ  shift, and go to state 482
+
+
+State 465
+
+   72 argument_list: LPAREN . TREE EQ ARGUMENT_LIST ARGUMENTS EQ t_list_argument RPAREN
+
+    TREE  shift, and go to state 464
+
+
+State 466
+
+   68 t_list_of_argument_list: LPAREN LIST EQ ARGUMENT_LIST list_of_argument_list RPAREN .
+
+    $default  reduce using rule 68 (t_list_of_argument_list)
+
+
+State 467
+
+   70 list_of_argument_list: list_of_argument_list argument_list .
+
+    $default  reduce using rule 70 (list_of_argument_list)
+
+
+State 468
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ . t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 74
+
+    t_list_statement  go to state 483
+
+
+State 469
+
+   46 variant_val: LPAREN NUMBER NUMBER RPAREN .
+
+    $default  reduce using rule 46 (variant_val)
+
+
+State 470
+
+   50 t_list_decl: LPAREN LIST EQ DECL . list_ident RPAREN
+
+    NIL     shift, and go to state 64
+    LPAREN  shift, and go to state 65
+
+    list_par    go to state 484
+    ident       go to state 67
+    list_ident  go to state 485
+
+
+State 471
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression . RHS EQ expression RPAREN
+
+    RHS  shift, and go to state 486
+
+
+State 472
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 487
+
+
+State 473
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list . RHS EQ expression RPAREN
+
+    RHS  shift, and go to state 488
+
+
+State 474
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 489
+
+
+State 475
+
+   58 t_list_argument: LPAREN LIST EQ ARGUMENT . list_argument RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression     go to state 490
+    nil            go to state 111
+    ident          go to state 113
+    const          go to state 114
+    s_assign       go to state 115
+    multi_assign   go to state 116
+    colon_expr     go to state 117
+    indx_expr      go to state 118
+    by_index       go to state 119
+    list_argument  go to state 491
+    by_field       go to state 120
+    bin_expr       go to state 121
+    bool_expr      go to state 122
+    un_expr        go to state 123
+    cell           go to state 124
+    matrix         go to state 125
+    fcn_handle     go to state 126
+
+
+State 476
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 492
+
+
+State 477
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 493
+
+
+State 478
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression . RHS EQ expression RPAREN
+
+    RHS  shift, and go to state 494
+
+
+State 479
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression . RHS EQ expression RPAREN
+
+    RHS  shift, and go to state 495
+
+
+State 480
+
+   83 if_clause: LPAREN TREE EQ . IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    IF_CLAUSE  shift, and go to state 496
+
+
+State 481
+
+   86 t_switch_case: LPAREN LIST EQ SW_CASE . list_switch_case RPAREN
+
+    LPAREN  shift, and go to state 497
+
+    nil               go to state 498
+    list_switch_case  go to state 499
+    switch_case       go to state 500
+
+
+State 482
+
+   72 argument_list: LPAREN TREE EQ . ARGUMENT_LIST ARGUMENTS EQ t_list_argument RPAREN
+
+    ARGUMENT_LIST  shift, and go to state 501
+
+
+State 483
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement . RPAREN
+
+    RPAREN  shift, and go to state 502
+
+
+State 484
+
+   36 list_par: list_par . ident
+   51 list_ident: list_par .
+
+    LPAREN  shift, and go to state 65
+
+    $default  reduce using rule 51 (list_ident)
+
+    ident  go to state 71
+
+
+State 485
+
+   50 t_list_decl: LPAREN LIST EQ DECL list_ident . RPAREN
+
+    RPAREN  shift, and go to state 503
+
+
+State 486
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS . EQ expression RPAREN
+
+    EQ  shift, and go to state 504
+
+
+State 487
+
+   54 colon_expr: LPAREN TREE EQ COLON_EXPR LINE EQ NUMBER COL EQ NUMBER BASE EQ expression LIM EQ expression INC EQ expression RPAREN .
+
+    $default  reduce using rule 54 (colon_expr)
+
+
+State 488
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS . EQ expression RPAREN
+
+    EQ  shift, and go to state 505
+
+
+State 489
+
+   64 un_expr: LPAREN TREE EQ UN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT OPERAND EQ expression RPAREN .
+
+    $default  reduce using rule 64 (un_expr)
+
+
+State 490
+
+   59 list_argument: expression .
+
+    $default  reduce using rule 59 (list_argument)
+
+
+State 491
+
+   58 t_list_argument: LPAREN LIST EQ ARGUMENT list_argument . RPAREN
+   60 list_argument: list_argument . expression
+
+    LPAREN  shift, and go to state 340
+    RPAREN  shift, and go to state 506
+
+    expression    go to state 507
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 492
+
+   57 by_index: LPAREN TREE EQ INDX_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT ARGS EQ t_list_argument INDEXED_EXPR EQ expression RPAREN .
+
+    $default  reduce using rule 57 (by_index)
+
+
+State 493
+
+   61 by_field: LPAREN TREE EQ FN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ IDENT FIELD EQ IDENT INDEXED_EXPR EQ expression RPAREN .
+
+    $default  reduce using rule 61 (by_field)
+
+
+State 494
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS . EQ expression RPAREN
+
+    EQ  shift, and go to state 508
+
+
+State 495
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS . EQ expression RPAREN
+
+    EQ  shift, and go to state 509
+
+
+State 496
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE . LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    LINE  shift, and go to state 510
+
+
+State 497
+
+   22 nil: LPAREN . NIL RPAREN
+   90 switch_case: LPAREN . TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    NIL   shift, and go to state 56
+    TREE  shift, and go to state 511
+
+
+State 498
+
+   89 list_switch_case: nil .
+
+    $default  reduce using rule 89 (list_switch_case)
+
+
+State 499
+
+   86 t_switch_case: LPAREN LIST EQ SW_CASE list_switch_case . RPAREN
+   88 list_switch_case: list_switch_case . switch_case
+
+    LPAREN  shift, and go to state 512
+    RPAREN  shift, and go to state 513
+
+    switch_case  go to state 514
+
+
+State 500
+
+   87 list_switch_case: switch_case .
+
+    $default  reduce using rule 87 (list_switch_case)
+
+
+State 501
+
+   72 argument_list: LPAREN TREE EQ ARGUMENT_LIST . ARGUMENTS EQ t_list_argument RPAREN
+
+    ARGUMENTS  shift, and go to state 515
+
+
+State 502
+
+   92 for: LPAREN TREE EQ FOR LINE EQ NUMBER COL EQ NUMBER LMODIFY_EXP EQ expression REVAL_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN .
+
+    $default  reduce using rule 92 (for)
+
+
+State 503
+
+   50 t_list_decl: LPAREN LIST EQ DECL list_ident RPAREN .
+
+    $default  reduce using rule 50 (t_list_decl)
+
+
+State 504
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 516
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 505
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 517
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 506
+
+   58 t_list_argument: LPAREN LIST EQ ARGUMENT list_argument RPAREN .
+
+    $default  reduce using rule 58 (t_list_argument)
+
+
+State 507
+
+   60 list_argument: list_argument expression .
+
+    $default  reduce using rule 60 (list_argument)
+
+
+State 508
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 518
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 509
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ . expression RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 519
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 510
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE . EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 520
+
+
+State 511
+
+   90 switch_case: LPAREN TREE . EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 521
+
+
+State 512
+
+   90 switch_case: LPAREN . TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    TREE  shift, and go to state 511
+
+
+State 513
+
+   86 t_switch_case: LPAREN LIST EQ SW_CASE list_switch_case RPAREN .
+
+    $default  reduce using rule 86 (t_switch_case)
+
+
+State 514
+
+   88 list_switch_case: list_switch_case switch_case .
+
+    $default  reduce using rule 88 (list_switch_case)
+
+
+State 515
+
+   72 argument_list: LPAREN TREE EQ ARGUMENT_LIST ARGUMENTS . EQ t_list_argument RPAREN
+
+    EQ  shift, and go to state 522
+
+
+State 516
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 523
+
+
+State 517
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 524
+
+
+State 518
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 525
+
+
+State 519
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression . RPAREN
+
+    RPAREN  shift, and go to state 526
+
+
+State 520
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ . NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 527
+
+
+State 521
+
+   90 switch_case: LPAREN TREE EQ . SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    SW_CASE  shift, and go to state 528
+
+
+State 522
+
+   72 argument_list: LPAREN TREE EQ ARGUMENT_LIST ARGUMENTS EQ . t_list_argument RPAREN
+
+    LPAREN  shift, and go to state 408
+
+    t_list_argument  go to state 529
+
+
+State 523
+
+   52 s_assign: LPAREN TREE EQ S_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN .
+
+    $default  reduce using rule 52 (s_assign)
+
+
+State 524
+
+   53 multi_assign: LPAREN TREE EQ MULTI_ASSIGN LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ argument_list RHS EQ expression RPAREN .
+
+    $default  reduce using rule 53 (multi_assign)
+
+
+State 525
+
+   62 bin_expr: LPAREN TREE EQ BIN_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN .
+
+    $default  reduce using rule 62 (bin_expr)
+
+
+State 526
+
+   63 bool_expr: LPAREN TREE EQ BOOL_EXPR LINE EQ NUMBER COL EQ NUMBER TYPE EQ NUMBER OP EQ IDENT LHS EQ expression RHS EQ expression RPAREN .
+
+    $default  reduce using rule 63 (bool_expr)
+
+
+State 527
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER . COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    COL  shift, and go to state 530
+
+
+State 528
+
+   90 switch_case: LPAREN TREE EQ SW_CASE . LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    LINE  shift, and go to state 531
+
+
+State 529
+
+   72 argument_list: LPAREN TREE EQ ARGUMENT_LIST ARGUMENTS EQ t_list_argument . RPAREN
+
+    RPAREN  shift, and go to state 532
+
+
+State 530
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL . EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 533
+
+
+State 531
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE . EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 534
+
+
+State 532
+
+   72 argument_list: LPAREN TREE EQ ARGUMENT_LIST ARGUMENTS EQ t_list_argument RPAREN .
+
+    $default  reduce using rule 72 (argument_list)
+
+
+State 533
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ . NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 535
+
+
+State 534
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ . NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 536
+
+
+State 535
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER . IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    IF_EXP  shift, and go to state 537
+
+
+State 536
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER . COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    COL  shift, and go to state 538
+
+
+State 537
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP . EQ expression STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 539
+
+
+State 538
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL . EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 540
+
+
+State 539
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ . expression STATEMENTS EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 541
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+
+
+State 540
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ . NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    NUMBER  shift, and go to state 542
+
+
+State 541
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression . STATEMENTS EQ t_list_statement RPAREN
+
+    STATEMENTS  shift, and go to state 543
+
+
+State 542
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER . CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    CASE_LABEL  shift, and go to state 544
+
+
+State 543
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS . EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 545
+
+
+State 544
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL . EQ case_label STATEMENTS EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 546
+
+
+State 545
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ . t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 74
+
+    t_list_statement  go to state 547
+
+
+State 546
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ . case_label STATEMENTS EQ t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 340
+
+    expression    go to state 548
+    nil           go to state 111
+    ident         go to state 113
+    const         go to state 114
+    s_assign      go to state 115
+    multi_assign  go to state 116
+    colon_expr    go to state 117
+    indx_expr     go to state 118
+    by_index      go to state 119
+    by_field      go to state 120
+    bin_expr      go to state 121
+    bool_expr     go to state 122
+    un_expr       go to state 123
+    cell          go to state 124
+    matrix        go to state 125
+    fcn_handle    go to state 126
+    case_label    go to state 549
+
+
+State 547
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement . RPAREN
+
+    RPAREN  shift, and go to state 550
+
+
+State 548
+
+   91 case_label: expression .
+
+    $default  reduce using rule 91 (case_label)
+
+
+State 549
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label . STATEMENTS EQ t_list_statement RPAREN
+
+    STATEMENTS  shift, and go to state 551
+
+
+State 550
+
+   83 if_clause: LPAREN TREE EQ IF_CLAUSE LINE EQ NUMBER COL EQ NUMBER IF_EXP EQ expression STATEMENTS EQ t_list_statement RPAREN .
+
+    $default  reduce using rule 83 (if_clause)
+
+
+State 551
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS . EQ t_list_statement RPAREN
+
+    EQ  shift, and go to state 552
+
+
+State 552
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ . t_list_statement RPAREN
+
+    LPAREN  shift, and go to state 74
+
+    t_list_statement  go to state 553
+
+
+State 553
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement . RPAREN
+
+    RPAREN  shift, and go to state 554
+
+
+State 554
+
+   90 switch_case: LPAREN TREE EQ SW_CASE LINE EQ NUMBER COL EQ NUMBER CASE_LABEL EQ case_label STATEMENTS EQ t_list_statement RPAREN .
+
+    $default  reduce using rule 90 (switch_case)

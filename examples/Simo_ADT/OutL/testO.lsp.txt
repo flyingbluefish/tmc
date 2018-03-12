@@ -1,0 +1,13 @@
+
+------------- PASS1 BEGIN FILE: ./Stubs/TestO.m-----------
+ 
+------------- PASS1 END FILE: ./Stubs/TestO.m-----------
+ 
+------------- PASS1 BEGIN FILE: ./MatSRC/findcompensator.m-----------
+ 
+------------- PASS1 END FILE: ./MatSRC/findcompensator.m-----------
+ 
+------------- PASS1 BEGIN FILE: ./MatSRC/getfrdRL.m-----------
+ 
+------------- PASS1 END FILE: ./MatSRC/getfrdRL.m-----------
+ ========== TMCPAR LSP GENERATION DONE: 3 succeeded, 0 failed, 3 processed ==========

@@ -1,0 +1,6 @@
+PATH=C:\BCC55\Bin
+
+make -f tmcpar_bor.mak.txt
+
+
+pause

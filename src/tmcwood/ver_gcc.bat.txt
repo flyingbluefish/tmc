@@ -1,0 +1,4 @@
+rem set PATH=C:\MinGW2\bin;
+set PATH=D:\Data_D\HSKOST\Tools\SygWin\install\bin
+@ gcc --version
+pause

@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{4575271D-33F7-40A2-BE1E-D0FCACEF30F8}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="woody.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="woody">
+        <MSBuild Projects="woody.cbproj"/>
+    </Target>
+    <Target Name="woody:Clean">
+        <MSBuild Projects="woody.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="woody:Make">
+        <MSBuild Projects="woody.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="woody"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="woody:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="woody:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

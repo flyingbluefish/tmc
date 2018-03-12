@@ -1,0 +1,3 @@
+matlspgen.exe:  lex.tmcpar_.cpp tmc_tree_debug.cpp tmclsp_matrix.cpp tmcpar.cpp tmcpar_env.cpp tmcpar_tree.cpp tmcpar_utils.cpp  TmcParParser.tab.cpp
+	bcc32 lex.tmcpar_.cpp tmc_tree_debug.cpp tmclsp_matrix.cpp tmcpar.cpp tmcpar_env.cpp tmcpar_tree.cpp tmcpar_utils.cpp  TmcParParser.tab.cpp > oo.txt
+		 

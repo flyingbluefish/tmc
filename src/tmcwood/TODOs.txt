@@ -1,0 +1,27 @@
+1. Register all strings  in hash
+2. Synchronize comments and rows with source matlab files (get valid ext)  - done
+3. Define correct expression types and create them - done
+4. Test all other constructions
+5. Test is work when keywords are identifiers or in strings - done
+
+6 . avoid lishie constructors !! - ok
+7. check simple assignment - ok
+8. Define command options, for comments synchronization.
+
+9. Check all other commands
+10 . checjk  matrixes
+11. check switchess
+
+tree_decl_elt - in comiler init expr=0
+destructor for all command and expressions
+
+
+1. exit function label: generate and store for return command (now const=1)
+2.	~ in lhs support
+3. static prefix for local functions and maybe decoration (decoration demands also called function change):
+	Decision: local functions should have unique name for all the project. - done
+	
+4 lsp--> support
+5 decrease registers for locals ( correct reset m_max_reg for tmcCreateRegFrame()  ) - done
+6 sincronize source code comments for local functions
+

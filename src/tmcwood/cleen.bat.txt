@@ -1,0 +1,44 @@
+
+del .\Debug\*.obj
+del .\Debug\*.sbr
+del .\Debug\*.dep
+del .\Debug\*.bsc
+del .\Debug\*.htm
+del .\Debug\*.manifest
+del .\Debug\*.pdb
+del .\Debug\*.idb
+del .\Debug\*.res
+
+del .\Debug2\*.obj
+del .\Debug2\*.sbr
+del .\Debug2\*.dep
+del .\Debug2\*.bsc
+del .\Debug2\*.htm
+del .\Debug2\*.manifest
+del .\Debug2\*.pdb
+del .\Debug2\*.idb
+del .\Debug2\*.res
+
+del .\Release2\*.obj
+del .\Release2\*.sbr
+del .\Release2\*.dep
+del .\Release2\*.bsc
+del .\Release2\*.htm
+del .\Release2\*.manifest
+del .\Release2\*.pdb
+del .\Release2\*.idb
+del .\Release2\*.res
+
+del .\Release\*.obj
+del .\Release\*.sbr
+del .\Release\*.dep
+del .\Release\*.bsc
+del .\Release\*.htm
+del .\Release\*.manifest
+del .\Release\*.pdb
+del .\Release\*.idb
+del .\Release\*.res
+
+del *.ncb
+pause
+
