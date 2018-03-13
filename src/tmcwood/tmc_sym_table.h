@@ -63,6 +63,7 @@ public:
 	}
 	void AppendFinalList(std::string fn)
 	{
+	  printf("add %s\n", fn.c_str());
 		FinalList.push_back(fn);
 	}
 	void LoadFinalList(char* file_name,symbol_table *pSymTable);// load files list and also register all its functions as unparsed.
@@ -337,6 +338,7 @@ public:
 
 		append_symbol(sr);//!< add function name
 
+		printf("symbol %s %d\n", name.c_str(), !bNameOnly);
 	}
 	else
 	{
@@ -348,6 +350,8 @@ public:
 			p->m_modifier.m_extern_func_parsed=0;// to be parsed if used
 		else
 			p->m_modifier.m_extern_func_parsed=1;// just parsed
+
+		printf("symbol %s %d\n", name.c_str(), !bNameOnly);
 	}
   };
 /** 

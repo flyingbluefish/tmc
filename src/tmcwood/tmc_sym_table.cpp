@@ -58,6 +58,7 @@ void  CTmcFileList::LoadFinalList(char* file_name,symbol_table *pSymTable)
 
 				if(Compiler.gen_for_all_list==true)
 				{
+				  printf("tmcfilelist push input file name %s %s:%d\n", buff, __FILE__, __LINE__);
 				PushFileStack(buff);
 				}
 
@@ -217,6 +218,7 @@ symbol_table::record_iterator  symbol_table::find_symbol(std::string x,bool case
 		{
 			if(p->m_modifier.m_in_stack==0)
 			{
+			  printf("tmcfilelist push input file name %s %s:%d\n", p->src_file_name().c_str(), __FILE__, __LINE__);
 				pTmcFileList->PushFileStack(p->src_file_name());
 				p->m_modifier.m_in_stack=1;
 			}
